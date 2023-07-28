@@ -27,18 +27,48 @@ const Cars = () => {
             >
                 <label >Modèle</label>
                 <input
-                    {...register("model", { required: true })}
+                    {...register("model", {
+                        required: true, 
+                        minLength: {
+                            value: 2,
+                            message: "Nom trop court"
+                        },
+                        maxLength: {
+                            value: 50,
+                            message: "Nom trop long"
+                        }
+                    }
+                    )}
                     type="text"
                 />
-                {errors.model && <span>Renseignez le modèle</span>}
+                {errors.model && errors.model.type === "required" && (
+                    <span>Renseignez le modèle</span>
+                )}
+                {errors.model && errors.model.type === "maxLength" && (
+                    <span>Nom trop long</span>
+                )}
+                {errors.model && errors.model.type === "minLength" && (
+                    <span>Nom trop court</span>
+                )}
                 <label>Km</label>
                 <input
-                    {...register("km", { required: true })}
+                    {...register("km", { 
+                        required: true,
+                        min: 5,
+                        max:3000000
+                     })}
 
                     type="number"
                 />
-                {errors.km && <span>Renseignez le km</span>}
-
+                {errors.km && errors.km.type === "required" && (
+                    <span>Renseignez le km</span>
+                )}
+                {errors.km && errors.km.type === "max" && (
+                    <span>Valeur trop grande</span>
+                )}
+                {errors.km && errors.km.type === "min" && (
+                    <span>Valeur trop petite </span>
+                )}
                 <label>Description</label>
                 <textarea name="" id="" cols="30" rows="6"
                     {...register("description")}
@@ -64,7 +94,7 @@ const Cars = () => {
                 cars.map((el, i) =>
                 (
                     <div key={i}>
-                        {el.model +" "+ el.type + " " + el.km}
+                        {el.model + " " + el.type + " " + el.km}
                     </div>
                 ))
             }
